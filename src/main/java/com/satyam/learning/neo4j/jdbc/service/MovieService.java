@@ -2,10 +2,9 @@ package com.satyam.learning.neo4j.jdbc.service;
 
 import com.satyam.learning.neo4j.jdbc.dao.CypherDAO;
 import com.satyam.learning.neo4j.jdbc.dao.CypherDAOImpl;
+import org.neo4j.helpers.collection.IteratorUtil;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Satyam on 3/19/2016.
@@ -23,6 +22,14 @@ public class MovieService {
             maniputeProperty();
             System.out.println("3. Querying...");
             query();
+            System.out.println("4. Finding The Matrix...");
+            Map movie = findMovie("The Matrix");
+            if(null != movie) {
+                System.out.println("Movie Found: Title: " + movie.get("title"));
+            }
+            else{
+                System.out.println("Movie not found...");
+            }
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -59,6 +66,22 @@ public class MovieService {
         String cypher = "match(p:Person)-[r:ACTED_IN]->(m:Movie) return p.name as Actor, m.title as Movie, m.released as Year, r.roles[0] as Role ORDER By Actor";
         System.out.println(cypherDAO.query(cypher, new LinkedHashMap<String, Object>()));
     }
+
+    public Map findMovie(String title) {
+        if (title==null) {
+            return Collections.emptyMap();
+        }
+
+        Map<String, Object> parameterMap = new LinkedHashMap<String, Object>();
+        parameterMap.put("1", title);
+
+        return IteratorUtil.singleOrNull(cypherDAO.query(
+                "MATCH (movie:Movie {title:{1}})" +
+                        " OPTIONAL MATCH (movie)<-[r]-(person:Person)\n" +
+                        " RETURN movie.title as title, collect({name:person.name, job:head(split(lower(type(r)),'_')), role:r.roles}) as cast LIMIT 1",
+                parameterMap));
+    }
+
 
 }
 
