@@ -19,7 +19,9 @@
         <!-- We need apache commons -->
         <apache.commons.lang.version>3.3.2</apache.commons.lang.version>
         <neo4j.driver.version>2.3.2</neo4j.driver.version>
+        <neo4j.ogm.version>2.0.0-M04</neo4j.ogm.version>
         <spring.version>4.2.5.RELEASE</spring.version>
+        <spring.neo4j.version>4.1.0.RC1</spring.neo4j.version>
         <junit.version>4.11</junit.version>
 
     </properties>
@@ -56,13 +58,27 @@
             <version>${neo4j.driver.version}</version>
             <type>test-jar</type>
         </dependency>
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-ogm-core</artifactId>
+            <version>${neo4j.ogm.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-ogm-http-driver</artifactId>
+            <version>${neo4j.ogm.version}</version>
+        </dependency>
         <!-- Spring framework dependency -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
             <version>${spring.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-neo4j</artifactId>
+            <version>${spring.neo4j.version}</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit-dep</artifactId>
@@ -86,6 +102,14 @@
                 <enabled>true</enabled>
                 <checksumPolicy>warn</checksumPolicy>
             </releases>
+        </repository>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/libs-milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
     </repositories>
 
