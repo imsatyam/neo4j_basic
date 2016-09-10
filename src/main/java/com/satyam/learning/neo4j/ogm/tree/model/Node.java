@@ -57,7 +57,6 @@ public class Node implements Comparable{
         return name;
     }
 
-    @Override
     public int compareTo(Object o) {
         Node that = (Node)o;
         if (this.name != null) {
